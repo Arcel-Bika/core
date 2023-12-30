@@ -44,12 +44,9 @@ class PresenceUpdatePacket with Container implements WebsocketPacket {
         case ActivityType.streaming:
           return StreamingActivity.from(payload['guild_id'], activity);
         default:
-          return GuildMemberActivity(
-            ActivityType.values.firstWhere((type) => type.value == activity['type']),
-            activity['name']
-          );
+          return null;
       }
-    }).toList();
+    }).whereNotNull().toList();
 
 
     afterMember.presence = GuildMemberPresence(
