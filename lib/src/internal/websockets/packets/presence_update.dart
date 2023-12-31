@@ -36,15 +36,20 @@ class PresenceUpdatePacket with Container implements WebsocketPacket {
     final List<GuildMemberActivity> activities = List.from(payload['activities']).map((activity) {
       final activityType = ActivityType.values.firstWhereOrNull((type) => activity['type'] == type.value);
 
-      switch (activityType) {
-        case ActivityType.custom:
-          return CustomActivity.from(payload['guild_id'], activity);
-        case ActivityType.game:
-          return GameActivity.from(payload['guild_id'], activity);
-        case ActivityType.streaming:
-          return StreamingActivity.from(payload['guild_id'], activity);
-        default:
-          return null;
+      if (activityType == null) {
+        return null;
+      }
+
+      if (activityType == ActivityType.custom) {
+        return CustomActivity.from(payload['guild_id'], activity);
+      }
+
+      if (activityType == ActivityType.game) {
+        return GameActivity.from(payload['guild_id'], activity);
+      }
+
+      if (activityType == ActivityType.streaming) {
+        return StreamingActivity.from(payload['guild_id'], activity);
       }
     }).whereNotNull().toList();
 
