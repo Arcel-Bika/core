@@ -154,6 +154,8 @@ extension MineralClientExtension on MineralClient {
 
       List<GuildMemberActivity> activities = [];
       for(dynamic activity in payload['activities']) {
+        print('activity ->');
+        print(activity);
         final activityType = ActivityType.values.firstWhereOrNull((element) => element.value == activity['type']);
         if (activityType != null) {
           activities.add(GuildMemberActivity(activityType, activity['name']));
