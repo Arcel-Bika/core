@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:collection/collection.dart';
 import 'package:http/http.dart';
 import 'package:mineral/core.dart';
 import 'package:mineral/core/api.dart';
@@ -153,7 +154,10 @@ extension MineralClientExtension on MineralClient {
 
       List<GuildMemberActivity> activities = [];
       for(dynamic activity in payload['activities']) {
-        activities.add(GuildMemberActivity(ActivityType.values.firstWhere((element) => element.value == activity['type']), activity['name']));
+        final activityType = ActivityType.values.firstWhereOrNull((element) => element.value == activity['type']);
+        if (activityType != null) {
+          activities.add(GuildMemberActivity(activityType, activity['name']));
+        }
       }
 
       GuildMemberPresence guildMemberPresence = GuildMemberPresence(payload['guild_id'], payload['status'], null, clientStatusBucket, activities);
