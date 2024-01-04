@@ -64,8 +64,7 @@ class Message extends PartialMessage<TextBasedChannel>  {
       .files(messagePayload['files'])
       .payload({
         ...messagePayload['payload'],
-        'flags': flags,
-        'allowed_mentions': allowMentions
+        'flags': flags
       })
       .build();
 
